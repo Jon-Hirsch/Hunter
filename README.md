@@ -1,2 +1,3 @@
-# SkeletalRigging
-A simple skeletal rig made in JavaScript and canvas
+# Hunter
+A simple AI. The red dot chases the green dots.
+http://jonhirsch.net/personal-projects/hunter/
