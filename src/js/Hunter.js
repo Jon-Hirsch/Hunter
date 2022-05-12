@@ -1,4 +1,4 @@
-import GameObject from './GameObject';
+import GameObject from "./GameObject";
 
 export default class Hunter extends GameObject {
   constructor(context, canvas) {
@@ -8,26 +8,28 @@ export default class Hunter extends GameObject {
     this.x = 20;
     this.y = 200;
     this.size = 8;
-    this.color = '#FF0000';
+    this.color = "#FF0000";
     this.targets = [];
     this.currentTarget = null;
   }
 
-  findClosestTarget () {
-    const liveTargets = this.targets.filter(target => !target.dead);
-    this.currentTarget = !liveTargets.length ? null
-      : liveTargets.reduce((closestTarget, nextTarget) => {
+  findClosestTarget() {
+    const liveTargets = this.targets.filter((target) => !target.dead);
+    this.currentTarget = null;
+    if (liveTargets.length) {
+      this.currentTarget = liveTargets.reduce((closestTarget, nextTarget) => {
         const currentDistance = this.getDistanceFromObject(closestTarget);
         const nextDistance = this.getDistanceFromObject(nextTarget);
         return currentDistance > nextDistance ? nextTarget : closestTarget;
       });
+    }
   }
 
   chaseTarget() {
     if (!this.currentTarget) return;
 
     const distance = this.getDistanceFromObject(this.currentTarget);
-    if (distance - this.speed < (this.size) + (this.currentTarget.size)) {
+    if (distance - this.speed < this.size + this.currentTarget.size) {
       this.currentTarget.die();
     }
 
