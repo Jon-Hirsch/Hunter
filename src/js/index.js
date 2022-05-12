@@ -1,21 +1,39 @@
-import Hunter from './Hunter';
-import Prey from './Prey';
+import debounce from "./debounce";
+import Hunter from "./Hunter";
+import Prey from "./Prey";
 
-document.addEventListener('DOMContentLoaded', initHunterGame);
+initHunterGame();
 
-function initHunterGame () {
-  const canvas = document.createElement('canvas');
-  canvas.width = 600;
-  canvas.height = 600;
-  const container = document.getElementById('hunterContainer');
+function initHunterGame() {
+  const canvas = document.createElement("canvas");
+  resizeCanvas(canvas);
+  const container = document.getElementById("hunterContainer");
   if (container) {
     container.appendChild(canvas);
     startGame(canvas);
+    window.addEventListener(
+      "resize",
+      debounce(() => resizeCanvas(canvas))
+    );
+  }
+}
+
+function resizeCanvas(canvas) {
+  if (window.innerWidth < 375) {
+    canvas.width = 300;
+    canvas.height = 300;
+  } else if (window.innerWidth < 850) {
+    const size = (window.innerWidth / 850) * 600;
+    canvas.width = size;
+    canvas.height = size;
+  } else {
+    canvas.width = 600;
+    canvas.height = 600;
   }
 }
 
 function startGame(canvas) {
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
   const preyCount = 15;
   const hunter = new Hunter(context, canvas);
   const prey = [];
@@ -33,12 +51,12 @@ function startGame(canvas) {
       lastUpdate = timestamp;
     }
     if (timestamp - lastUpdate > 16.7) {
-      context.fillStyle = '#D2B48C';
+      context.fillStyle = "#D2B48C";
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      prey.forEach(p => p.update());
+      prey.forEach((p) => p.update());
       hunter.update();
-      prey.forEach(p => p.draw());
+      prey.forEach((p) => p.draw());
       hunter.draw();
       lastUpdate = timestamp;
     }
